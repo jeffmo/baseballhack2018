@@ -9,15 +9,25 @@ const WebSocket = require('ws');
 const app = express();
 app.use(express.static('../web'));
 
-// Polling server (todo idk)
-app.get('/api/poll', function (req, res) {
-    console.log('hey buddy')
-    res.send('Hello World');
-});
-
 // Just in case, during a live demo~!
 app.post('/api/KILL_THE_SERVER_', function (req, res) {
     process.exit(1);
+});
+
+// Polling server (todo idk)
+app.post('/api/go', function (req, res) {
+    // Update the schedule and push it out to all participants
+    // 5seconds later than this time, to account for lag
+    let start_time = Date.now() + (1000*5);
+    all_users.forEach(socket => {
+        // Create the schedule to send out
+        socket.send(JSON.stringify(['schedule', {
+            start: start_time,
+            schedule: [],
+        }]));
+    });
+
+    res.redirect('/operator/');
 });
 
 // Websocket setup.
@@ -32,18 +42,18 @@ let all_users = new Set();
 wss.on('connection', (ws, req) => {
     // Add to our set.
     all_users.add(ws);
-    all_users.forEach((user) => {
-        user.send(all_users.size);
+    all_users.forEach(socket => {
+        socket.send(JSON.stringify(['presence', all_users.size]));
     });
     console.log('(+) websocket subscribed, count is', all_users.size);
     
     // Remove from our set to our set.
-    ws.on('close', function () {
+    ws.on('close', () => {
         all_users.delete(ws);
-        all_users.forEach((user) => {
-            user.send(all_users.size);
+        all_users.forEach(socket => {
+            socket.send(JSON.stringify(['presence', all_users.size]));
         });
-        console.log('(-) websocket unsubscribed, count is', user_count);
+        console.log('(-) websocket unsubscribed, count is', all_users.size);
     });
 
     // Handle incoming messages
