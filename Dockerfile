@@ -11,5 +11,4 @@ COPY . .
 
 # Run node
 EXPOSE 5000
-CMD [ "npm", "start", "--prefix", "server" ]
-
+CMD while true; do npm start --prefix server; done

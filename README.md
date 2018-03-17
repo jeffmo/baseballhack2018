@@ -10,3 +10,13 @@ https://www.youtube.com/watch?v=CEVdca9U9LM
 git remote add dokku dokku@crowdtron.net:crowdtron
 git push dokku master
 ```
+
+## Running the Node server locally
+
+```
+cd server
+npm i
+npm start
+```
+
+Then open <http://localhost:5000/>
