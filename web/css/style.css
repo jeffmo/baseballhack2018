@@ -2,6 +2,25 @@
   font-family: serif;
 }
 
+.sectionLink {
+  text-decoration: none;
+}
+
+.sectionButton {
+  border: 1px solid black;
+  color: black;
+  font-family: serif;
+  font-size: 40px;
+  margin: 20px 30px;
+  text-align: center;
+}
+
+#chooseSection {
+  font-size: 40px;
+  margin-top: 100px;
+  text-align:center;
+}
+
 body {
   margin: 0;
   padding: 0;

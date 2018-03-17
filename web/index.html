@@ -11,86 +11,26 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 	
-	<script>
-	  $(document).ready(function() {
-		});
-
-		function colorShow(_, _) {
-			console.error('Starting color show');
-
-      var params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
-
-			const COUNTDOWN_SECS = 5;
-			const MS_IN_SEC = 1000;
-
-      const colorsBySection = [];
-      colorsBySection[1] = ["white","red",  "red",  "white","white","white","white","white","white","white","blue", "blue" ,"white"];
-      colorsBySection[2] = ["white","white","red",  "red",  "white","white","white","white","white","blue", "blue", "white","white"];
-      colorsBySection[3] = ["white","white","white","red",  "red",  "white","white","white","blue", "blue", "white","white","white"];
-      colorsBySection[4] = ["white","white","white","white","red",  "red",  "white","blue", "blue", "white","white","white","white"];
-
-      const sectionIndex = params['section'];
-
-      var colorsList;
-      if (sectionIndex > 0 && sectionIndex <= 4) {
-        colorsList = colorsBySection[sectionIndex];
-      } else {
-        colorsList = colorsBySection[1];
-      }
-
-			const now = new Date();
-
-			const startCountdownTime = now.getTime() + 3 * MS_IN_SEC; // This will be the timestamp from "Go!"
-			const timeUntilCountdown = startCountdownTime - now;
-
-			// We first show a countdown for 5 seconds and then start flashing colors.
-			const startColorTime = startCountdownTime + COUNTDOWN_SECS * MS_IN_SEC;
-
-			const update = () => {
-				const nowTime = (new Date()).getTime();
-				if (nowTime < startColorTime) {
-          $('#instruction').text('Hold your phone up!');
-					const sec = Math.ceil((startColorTime - nowTime) / MS_IN_SEC);
-					$('#countdown').text(sec);
-					if (sec == 1) {
-						// get back on track to the exact start time
-						setTimeout(update, nowTime - startColorTime);
-					} else {
-						setTimeout(update, MS_IN_SEC);
-					}
-					return;
-				}
-
-				$('#instruction').hide();
-				$('#countdown').hide();	
-				const index = Math.floor((nowTime - startColorTime) / MS_IN_SEC);
-				if (index < colorsList.length) {
-					$('#everything').css('background-color', colorsList[index]);
-					const nextColorTime = startColorTime + (index + 1) * MS_IN_SEC
-					setTimeout(update, nowTime - nextColorTime);
-				}
-			};
-
-			if (timeUntilCountdown > 0) {
-				setTimeout(
-					update,	
-					timeUntilCountdown
-				);
-			}
-	  }
-	</script>
-	
 </head>
 
 <body>
 
   <div id="everything">
-    <div class="text" id="instruction">
-      Hold your phone up!
+    <div id="chooseSection">
+    Choose your section:
     </div>
-    <br/>
-    <div class="text" id="countdown">
-    </div>
+    <a class="sectionLink" href="colors.html?section=1">
+      <div class="sectionButton">1</div>
+    </a>
+    <a class="sectionLink" href="colors.html?section=2">
+      <div class="sectionButton">2</div>
+    </a>
+    <a class="sectionLink" href="colors.html?section=3">
+      <div class="sectionButton">3</div>
+    </a>
+    <a class="sectionLink" href="colors.html?section=4">
+      <div class="sectionButton">4</div>
+    </a>
   </div>
 	
 <script src="/js/crowdtron.js"></script>
