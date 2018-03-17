@@ -1,0 +1,14 @@
+.class {
+  font-family: serif;
+}
+
+#instruction {
+  font-size: 40px;
+  margin-top: 150px;
+  text-align:center;
+}
+
+#countdown {
+  font-size: 60px;
+  text-align: center;
+}
