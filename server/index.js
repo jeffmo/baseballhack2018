@@ -5,42 +5,48 @@ const http = require('http');
 const url = require('url');
 const WebSocket = require('ws');
 
+// App setup.
 const app = express();
-
 app.use(express.static('../web'));
 
+// Polling server (todo idk)
 app.get('/api/poll', function (req, res) {
     console.log('hey buddy')
     res.send('Hello World');
 });
 
+// Just in case, during a live demo~!
 app.post('/api/KILL_THE_SERVER_', function (req, res) {
     process.exit(1);
 });
 
+// Websocket setup.
 const server = http.createServer(app);
 const wss = new WebSocket.Server({
     server,
     path: '/api/ws',
 });
 
-let user_count = 0;
+// Set of all users.
 let all_users = new Set();
-
-wss.on('connection', function connection(ws, req) {
+wss.on('connection', (ws, req) => {
+    // Add to our set.
     all_users.add(ws);
-
-    const location = url.parse(req.url, true);
-    // You might use location.query.access_token to authenticate or share sessions
-    // or req.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
-
-    user_count += 1;
-    console.log('(+) websocket subscribed, count is', user_count);
-
     all_users.forEach((user) => {
-        user.send(user_count);
+        user.send(all_users.size);
+    });
+    console.log('(+) websocket subscribed, count is', all_users.size);
+    
+    // Remove from our set to our set.
+    ws.on('close', function () {
+        all_users.delete(ws);
+        all_users.forEach((user) => {
+            user.send(all_users.size);
+        });
+        console.log('(-) websocket unsubscribed, count is', user_count);
     });
 
+    // Handle incoming messages
     ws.on('message', function incoming(message) {
         if (message == 'ping') {
             // drop pings
@@ -48,24 +54,11 @@ wss.on('connection', function connection(ws, req) {
         }
 
         console.log('received message: %s', message);
-        // TODO do something with this?
+        // TODO do something with this message?
     });
-
-    // ws.send('something');
-
-    console.log('counter++');
-    ws.on('close', function () {
-        all_users.delete(ws);
-
-        user_count = (user_count > 0 ? user_count - 1 : 0);
-        console.log('(-) websocket unsubscribed, count is', user_count);
-        
-        all_users.forEach((user) => {
-            user.send(user_count);
-        });
-    })
 });
 
-server.listen(PORT, function listening() {
+// Serve.
+server.listen(PORT, () => {
     console.log('Listening on http://localhost:%d/', server.address().port);
 });
