@@ -1,5 +1,5 @@
-.class {
-  font-family: serif;
+.text {
+  font-family: helvetica;
 }
 
 .sectionLink {
@@ -9,7 +9,7 @@
 .sectionButton {
   border: 1px solid black;
   color: black;
-  font-family: serif;
+  font-family: helvetica;
   font-size: 40px;
   margin: 20px 30px;
   text-align: center;
