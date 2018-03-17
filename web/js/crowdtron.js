@@ -14,18 +14,27 @@ presence.onmessage = function (event) {
     let value = packet[1];
 
     switch (key) {
+<<<<<<< Updated upstream
         case 'schedule':
             // value.start is the UTC start time to compare with (new Date()).getTime()
             // value.schedule is a bundle of schedule data we can use arbitrarily
 
             // TODO don't just alert this
             alert(value.start);
+=======
+        case 'alert':
+            alert(value);
+>>>>>>> Stashed changes
             break;
 
         case 'presence':
             if (document.querySelector('#how_many')) {
+<<<<<<< Updated upstream
                 // Don't include self, so subtract 1
                 document.querySelector('#how_many').innerText = value - 1;
+=======
+                document.querySelector('#how_many').innerText = value;
+>>>>>>> Stashed changes
             }
             break;
     }

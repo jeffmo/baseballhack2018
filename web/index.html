@@ -13,7 +13,7 @@
 	<script>
 	  $(document).ready(function() {
       // Full-screen
-      $('body').click(function(){
+      $('#everything').click(function(){
         var el = document.documentElement,
         rfs = el.requestFullscreen
           || el.webkitRequestFullScreen
@@ -54,7 +54,7 @@
 				$('#countdown').hide();	
 				const index = Math.floor((nowTime - startColorTime) / MS_IN_SEC);
 				if (index < colorsList.length) {
-					document.body.style.backgroundColor = colorsList[index];
+					$('#everything').css('background-color', colorsList[index]);
 					const nextColorTime = startColorTime + (index + 1) * MS_IN_SEC
 					setTimeout(update, nowTime - nextColorTime);
 				}
@@ -72,6 +72,7 @@
 </head>
 
 <body>
+<<<<<<< Updated upstream
 <<<<<<< HEAD
   <div class="text" id="instruction">
     Click anywhere to enter fullscreen.
@@ -93,6 +94,19 @@ Hold your phone up!
 <script src="/js/crowdtron.js"></script>
 	
 >>>>>>> 473c3e625d9fc4997c3be80dd3e6ff93abe52bc4
+=======
+  <div id="everything">
+    <div class="text" id="instruction">
+      Click anywhere to enter fullscreen.
+    </div>
+    <br/>
+    <div class="text" id="countdown">
+    </div>
+  </div>
+	
+<script src="/js/crowdtron.js"></script>
+	
+>>>>>>> Stashed changes
 </body>
 </html>
 
