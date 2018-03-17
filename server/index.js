@@ -35,6 +35,35 @@ app.post('/api/go', function (req, res) {
     res.redirect('/operator/');
 });
 
+const VIDEO_FILE = path.resolve(__dirname, 'video.mp4');
+app.get('/video.mp4', function (req, res) {
+  var range = req.headers.range;
+  if (!range) {
+    return res.sendStatus(416); // Wrong range
+  }
+
+  var positions = range.replace(/bytes=/, "").split("-");
+  var start = parseInt(positions[0], 10);
+  var total = stats.size;
+  var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+  var chunksize = (end - start) + 1;
+
+  res.writeHead(206, {
+    "Content-Range": "bytes " + start + "-" + end + "/" + total,
+    "Accept-Ranges": "bytes",
+    "Content-Length": chunksize,
+    "Content-Type": "video/mp4"
+  });
+
+  var stream = fs.createReadStream(file, { start: start, end: end })
+    .on("open", function() {
+      stream.pipe(res);
+    })
+    .on("error", function(err) {
+      res.end(err);
+    });
+});
+
 // Websocket setup.
 const server = http.createServer(app);
 const wss = new WebSocket.Server({
@@ -65,7 +94,6 @@ wss.on('connection', (ws, req) => {
         socket.send(JSON.stringify(['presence', Object.values(sections).map(s => s.size)]));
     });
     console.log('(+) websocket subscribed, section counts:', Object.values(sections).map(s => s.size));
-    
     // Remove from our set to our set.
     ws.on('close', () => {
         if (section !== 'operator') {
