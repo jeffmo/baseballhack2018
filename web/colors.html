@@ -28,24 +28,27 @@
 			const MS_IN_SEC = 1000;
 
       const colorsBySection = [];
-      colorsBySection[1] = ["white","red",  "white","white","white","white","white","white","white","blue", "white"];
-      colorsBySection[2] = ["white","white","red",  "white","white","white","white","white","blue", "white","white"];
-      colorsBySection[3] = ["white","white","white","red",  "white","white","white","blue", "white","white","white"];
-      colorsBySection[4] = ["white","white","white","white","red",  "white","blue", "white","white","white","white"];
-      /*
-      colorsBySection[1] = ["white","red",  "red",  "white","white","white","white","white","white","white","blue", "blue" ,"white"];
-      colorsBySection[2] = ["white","white","red",  "red",  "white","white","white","white","white","blue", "blue", "white","white"];
-      colorsBySection[3] = ["white","white","white","red",  "red",  "white","white","white","blue", "blue", "white","white","white"];
-      colorsBySection[4] = ["white","white","white","white","red",  "red",  "white","blue", "blue", "white","white","white","white"];
-      */
+      colorsBySection[1] = ["white","#C8102E",  "white","white","white","white","white","white","white","#0C2340", "white","white","#C8102E",  "white","white","white","white","white","white","white","#0C2340", "white"];
+      colorsBySection[2] = ["white","white","#C8102E",  "white","white","white","white","white","#0C2340", "white","white","white","white","#C8102E",  "white","white","white","white","white","#0C2340", "white","white"];
+      colorsBySection[3] = ["white","white","white","#C8102E",  "white","white","white","#0C2340", "white","white","white","white","white","white","#C8102E",  "white","white","white","#0C2340", "white","white","white"];
+      colorsBySection[4] = ["white","white","white","white","#C8102E",  "white","#0C2340", "white","white","white","white","white","white","white","white","#C8102E",  "white","#0C2340", "white","white","white","white"];
+
+      const imagesBySection = [];
+      imagesBySection[1] = ["images/go.png", "images/go.png", null, null]; 
+      imagesBySection[2] = ["images/go.png", "images/go.png", null, null]; 
+      imagesBySection[3] = [null, null, "images/sox.png", "images/sox.png"];
+      imagesBySection[4] = [null, null, "images/sox.png", "images/sox.png"];
 
       const sectionIndex = params['section'];
 
       var colorsList;
+      var imagesList;
       if (sectionIndex > 0 && sectionIndex <= 4) {
         colorsList = colorsBySection[sectionIndex];
+        imagesList = imagesBySection[sectionIndex];
       } else {
         colorsList = colorsBySection[1];
+        imagesList = colorsBySection[1];
       }
 
 			const now = new Date();
@@ -73,12 +76,26 @@
 
 				$('#instruction').hide();
 				$('#countdown').hide();	
-				const index = Math.floor((nowTime - startColorTime) / MS_IN_SEC);
+				const index = Math.floor((nowTime - startColorTime) / (MS_IN_SEC/2));
 				if (index < colorsList.length) {
 					$('#everything').css('background-color', colorsList[index]);
-					const nextColorTime = startColorTime + (index + 1) * MS_IN_SEC
+					const nextColorTime = startColorTime + (index + 1) * (MS_IN_SEC/2)
 					setTimeout(update, nowTime - nextColorTime);
-				}
+        } else {
+          const imageIndex = (index - colorsList.length) % 4;
+          $('#everything').css('background-color', '#0C2340');
+          const imageSrc = imagesList[imageIndex];
+          if (imageSrc !== null) {
+            var image = document.createElement("IMG");
+            image.setAttribute('class', 'photo');
+            image.src=imageSrc;
+            $('#everything').html(image);
+          } else {
+            $('#everything').html("");
+          }
+					const nextImageTime = startColorTime + (index + 1) * (MS_IN_SEC/2)
+					setTimeout(update, nowTime - nextImageTime);
+        }
 			};
 
 			if (timeUntilCountdown > 0) {
@@ -101,6 +118,8 @@
     </div>
     <br/>
     <div class="text" id="countdown">
+    </div>
+    <div id="image">  
     </div>
   </div>
 	

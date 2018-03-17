@@ -33,6 +33,13 @@ body {
   margin: 30px auto 0 auto;
 }
 
+.photo {
+  display: block;
+  height: 400px;
+  margin: auto;
+  top: 30px;
+}
+
 #everything {
   min-height: 100vh;
 }
