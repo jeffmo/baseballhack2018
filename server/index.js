@@ -20,7 +20,7 @@ app.post('/api/go', function (req, res) {
     all_users.forEach(socket => {
         socket.send(JSON.stringify(['alert', Date.now()]));
     });
-    res.send('cool');
+    res.redirect('/operator/');
 });
 
 // Websocket setup.
@@ -46,7 +46,7 @@ wss.on('connection', (ws, req) => {
         all_users.forEach(socket => {
             socket.send(JSON.stringify(['presence', all_users.size]));
         });
-        console.log('(-) websocket unsubscribed, count is', user_count);
+        console.log('(-) websocket unsubscribed, count is', all_users.size);
     });
 
     // Handle incoming messages
