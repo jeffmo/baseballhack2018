@@ -20,16 +20,21 @@
                 myVideo.pause();
          }
         function goFullscreen() {
+          /*
             var myPlayer = document.getElementById('video-player');
             myPlayer.webkitRequestFullscreen();
+            */
+          let vid = document.getElementById('video');
+          vid.webkitEnterFullscreen();
+          vid.play();
         }
     </script>
 </head>
 <body>
     <div id="video-player">
         HAI
-        <!--<video src="myMovie.m4v"></video>-->
-        <p><a href="javascript:playPause();">Play/Pause</a></p>
+        <video src="/test1.mp4" id="video"></video>
+        <!--<p><a href="javascript:playPause();">Play/Pause</a></p>-->
     </div>
     <a href="javascript:goFullscreen();">Full-screen</a>
 </body>
