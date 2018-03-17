@@ -9,4 +9,6 @@ app.get('/api/poll', function (req, res) {
     res.send('Hello World');
 });
  
-app.listen(3000);
+let PORT = 5000;
+app.listen(PORT);
+console.log('Launched on port http://0.0.0.0:' + PORT + '/');
