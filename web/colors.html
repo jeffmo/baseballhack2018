@@ -34,10 +34,10 @@
       colorsBySection[4] = ["white","white","white","white","#C8102E",  "white","#0C2340", "white","white","white","white","white","white","white","white","#C8102E",  "white","#0C2340", "white","white","white","white"];
 
       const imagesBySection = [];
-      imagesBySection[1] = ["images/go.png", "images/go.png", null, null]; 
-      imagesBySection[2] = ["images/go.png", "images/go.png", null, null]; 
-      imagesBySection[3] = [null, null, "images/sox.png", "images/sox.png"];
-      imagesBySection[4] = [null, null, "images/sox.png", "images/sox.png"];
+      imagesBySection[1] = ["images/go.png", null]; 
+      imagesBySection[2] = ["images/go.png", null]; 
+      imagesBySection[3] = [null, "images/sox.png"];
+      imagesBySection[4] = [null, "images/sox.png"];
 
       const sectionIndex = params['section'];
 
@@ -76,13 +76,13 @@
 
 				$('#instruction').hide();
 				$('#countdown').hide();	
-				const index = Math.floor((nowTime - startColorTime) / (MS_IN_SEC/2));
+				const index = Math.floor((nowTime - startColorTime) / (MS_IN_SEC));
 				if (index < colorsList.length) {
 					$('#everything').css('background-color', colorsList[index]);
-					const nextColorTime = startColorTime + (index + 1) * (MS_IN_SEC/2)
+					const nextColorTime = startColorTime + (index + 1) * (MS_IN_SEC)
 					setTimeout(update, nowTime - nextColorTime);
         } else {
-          const imageIndex = (index - colorsList.length) % 4;
+          const imageIndex = (index - colorsList.length) % 2;
           $('#everything').css('background-color', '#0C2340');
           const imageSrc = imagesList[imageIndex];
           if (imageSrc !== null) {
@@ -96,7 +96,7 @@
           } else {
             $('#everything').html("");
           }
-					const nextImageTime = startColorTime + (index + 1) * (MS_IN_SEC/2)
+					const nextImageTime = startColorTime + (index + 1) * (MS_IN_SEC)
 					setTimeout(update, nowTime - nextImageTime);
         }
 			};
