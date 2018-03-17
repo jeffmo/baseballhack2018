@@ -12,6 +12,17 @@
 	
 	<script>
 	  $(document).ready(function() {
+      // Full-screen
+      $('body').click(function(){
+        var el = document.documentElement,
+        rfs = el.requestFullscreen
+          || el.webkitRequestFullScreen
+          || el.mozRequestFullScreen
+          || el.msRequestFullscreen;
+        rfs.call(el);
+        $('#instruction').text('Hold your phone up!');
+      });
+
 			const COUNTDOWN_SECS = 5;
 			const MS_IN_SEC = 1000;
 
@@ -61,18 +72,12 @@
 </head>
 
 <body>
-	
-<div class="text" id="instruction">
-Hold your phone up!
-</div>
-<br/>
-<div class="text" id="countdown">
-</div>
-	
- 
- 
-
-	
+  <div class="text" id="instruction">
+    Click anywhere to enter fullscreen.
+  </div>
+  <br />
+  <div class="text" id="countdown">
+  </div>
 </body>
 </html>
 
