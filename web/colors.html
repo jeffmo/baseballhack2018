@@ -86,10 +86,13 @@
           $('#everything').css('background-color', '#0C2340');
           const imageSrc = imagesList[imageIndex];
           if (imageSrc !== null) {
-            var image = document.createElement("IMG");
-            image.setAttribute('class', 'photo');
-            image.src=imageSrc;
-            $('#everything').html(image);
+            if (!$('#goSox').length) {
+              var image = document.createElement("IMG");
+              image.setAttribute('class', 'photo');
+              image.setAttribute('id', 'goSox');
+              image.src=imageSrc;
+              $('#everything').html(image);
+            }
           } else {
             $('#everything').html("");
           }
