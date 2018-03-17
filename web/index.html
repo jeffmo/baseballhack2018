@@ -13,7 +13,7 @@
 	<script>
 	  $(document).ready(function() {
       // Full-screen
-      $('body').click(function(){
+      $('#everything').click(function(){
         var el = document.documentElement,
         rfs = el.requestFullscreen
           || el.webkitRequestFullScreen
@@ -39,6 +39,7 @@
 			const update = () => {
 				const nowTime = (new Date()).getTime();
 				if (nowTime < startColorTime) {
+          $('#instruction').text('Hold your phone up!');
 					const sec = Math.ceil((startColorTime - nowTime) / MS_IN_SEC);
 					$('#countdown').text(sec);
 					if (sec == 1) {
@@ -54,7 +55,7 @@
 				$('#countdown').hide();	
 				const index = Math.floor((nowTime - startColorTime) / MS_IN_SEC);
 				if (index < colorsList.length) {
-					document.body.style.backgroundColor = colorsList[index];
+					$('#everything').css('background-color', colorsList[index]);
 					const nextColorTime = startColorTime + (index + 1) * MS_IN_SEC
 					setTimeout(update, nowTime - nextColorTime);
 				}
@@ -72,27 +73,17 @@
 </head>
 
 <body>
-<<<<<<< HEAD
-  <div class="text" id="instruction">
-    Click anywhere to enter fullscreen.
+  <div id="everything">
+    <div class="text" id="instruction">
+      Click anywhere to enter fullscreen.
+    </div>
+    <br/>
+    <div class="text" id="countdown">
+    </div>
   </div>
-  <br />
-  <div class="text" id="countdown">
-  </div>
-=======
 	
-<div class="text" id="instruction">
-Hold your phone up!
-</div>
-<br/>
-<div class="text" id="countdown">
-</div>
-	
- 
- 
 <script src="/js/crowdtron.js"></script>
 	
->>>>>>> 473c3e625d9fc4997c3be80dd3e6ff93abe52bc4
 </body>
 </html>
 
