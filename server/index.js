@@ -17,9 +17,16 @@ app.post('/api/KILL_THE_SERVER_', function (req, res) {
 // Polling server (todo idk)
 app.post('/api/go', function (req, res) {
     // Update the schedule and push it out to all participants
+    // 5seconds later than this time, to account for lag
+    let start_time = Date.now() + (1000*5);
     all_users.forEach(socket => {
-        socket.send(JSON.stringify(['alert', Date.now()]));
+        // Create the schedule to send out
+        socket.send(JSON.stringify(['schedule', {
+            start: start_time,
+            schedule: [],
+        }]));
     });
+
     res.redirect('/operator/');
 });
 
