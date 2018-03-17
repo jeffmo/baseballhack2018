@@ -12,12 +12,25 @@
 	
 	<script>
 	  $(document).ready(function() {
-      $('body').scrollTop(1);
+      var params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
 
 			const COUNTDOWN_SECS = 5;
 			const MS_IN_SEC = 1000;
 
-			const colorsList = ["red","white","blue","red","white","blue"]; // This will come from the server.
+      const colorsBySection = [];
+      colorsBySection[1] = ["white","red",  "red",  "white","white","white","white","white","white","white","blue", "blue" ,"white"];
+      colorsBySection[2] = ["white","white","red",  "red",  "white","white","white","white","white","blue", "blue", "white","white"];
+      colorsBySection[3] = ["white","white","white","red",  "red",  "white","white","white","blue", "blue", "white","white","white"];
+      colorsBySection[4] = ["white","white","white","white","red",  "red",  "white","blue", "blue", "white","white","white","white"];
+
+      const sectionIndex = params['section'];
+
+      var colorsList;
+      if (sectionIndex > 0 && sectionIndex <= 4) {
+        colorsList = colorsBySection[sectionIndex];
+      } else {
+        colorsList = colorsBySection[1];
+      }
 
 			const now = new Date();
 
