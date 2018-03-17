@@ -27,7 +27,7 @@ presence.onmessage = function (event) {
             // TODO don't just alert this
             // alert(value.start);
             if (window.colorShow) {
-                colorShow(value.start, value.schedule);
+                colorShow(value.start); //, value.schedule);
             }
             break;
 

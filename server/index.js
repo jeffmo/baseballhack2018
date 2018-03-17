@@ -22,14 +22,14 @@ app.post('/api/go', function (req, res) {
 	const MS_IN_SEC = 1000;
     const startCountdownTime = Date.now() + (COUNTDOWN_SECS*MS_IN_SEC);
 
-    const colorsList = ["red", "white", "blue", "red", "white", "blue"];
-
-    all_users.forEach(socket => {
-        // Create the schedule to send out
-        socket.send(JSON.stringify(['schedule', {
-            start: startCountdownTime,
-            schedule: colorsList,
-        }]));
+    Object.values(sections).forEach(section_users => {
+        section_users.forEach(socket => {
+            // Create the schedule to send out
+            socket.send(JSON.stringify(['schedule', {
+                start: startCountdownTime,
+                // schedule: colorsList,
+            }]));
+        });
     });
 
     res.redirect('/operator/');

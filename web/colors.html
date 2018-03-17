@@ -12,13 +12,14 @@
   <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 	
 	<script>
-	  $(document).ready(function() {
+		var params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
+			
+		$(document).ready(function() {
+			$('#which-section').text('Section ' + params['section'])
 		});
 
-		function colorShow(_, _) {
+		function colorShow(startCountdownTime) {
 			console.error('Starting color show');
-
-      var params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
 
 			const COUNTDOWN_SECS = 5;
 			const MS_IN_SEC = 1000;
@@ -40,7 +41,7 @@
 
 			const now = new Date();
 
-			const startCountdownTime = now.getTime() + 3 * MS_IN_SEC; // This will be the timestamp from "Go!"
+			// const startCountdownTime = now.getTime() + 3 * MS_IN_SEC; // This will be the timestamp from "Go!"
 			const timeUntilCountdown = startCountdownTime - now;
 
 			// We first show a countdown for 5 seconds and then start flashing colors.
@@ -86,7 +87,8 @@
 
   <div id="everything">
     <div class="text" id="instruction">
-      Hold your phone up!
+			Hold your phone up!
+			<br><small id="which-section">Section</small>
     </div>
     <br/>
     <div class="text" id="countdown">
