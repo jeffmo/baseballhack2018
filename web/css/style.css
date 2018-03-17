@@ -34,9 +34,14 @@ body {
 }
 
 .photo {
+  bottom: 0;
   display: block;
   height: 400px;
+  left: 0;
   margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
   top: 30px;
 }
 
