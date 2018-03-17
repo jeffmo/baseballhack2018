@@ -17,9 +17,15 @@ presence.onopen = function (event) {
     console.log('opened');
 };
 
+presence.onmessage = function (event) {
+    document.querySelector('#how_many').innerText = event.data;
+}
+
 // Websockets time out without content, so we add a setinterval
 setInterval(function () {
     presence.send('ping');
 }, 5000);
 
 </script>
+
+<h3>Online right now: <span id="how_many"></span></h3>

@@ -28,7 +28,7 @@ let user_count = 0;
 let all_users = new Set();
 
 wss.on('connection', function connection(ws, req) {
-    all_users.add(req);
+    all_users.add(ws);
 
     const location = url.parse(req.url, true);
     // You might use location.query.access_token to authenticate or share sessions
@@ -36,6 +36,10 @@ wss.on('connection', function connection(ws, req) {
 
     user_count += 1;
     console.log('(+) websocket subscribed, count is', user_count);
+
+    all_users.forEach((user) => {
+        user.send(user_count);
+    });
 
     ws.on('message', function incoming(message) {
         if (message == 'ping') {
@@ -51,9 +55,14 @@ wss.on('connection', function connection(ws, req) {
 
     console.log('counter++');
     ws.on('close', function () {
-        all_users.remove(req);
+        all_users.delete(ws);
+
         user_count = (user_count > 0 ? user_count - 1 : 0);
         console.log('(-) websocket unsubscribed, count is', user_count);
+        
+        all_users.forEach((user) => {
+            user.send(user_count);
+        });
     })
 });
 
