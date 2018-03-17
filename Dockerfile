@@ -10,6 +10,6 @@ RUN npm install --prefix server
 COPY . .
 
 # Run node
-EXPOSE 3000
+EXPOSE 5000
 CMD [ "npm", "start", "--prefix", "server" ]
 
