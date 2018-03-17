@@ -27,6 +27,12 @@ body {
   border-bottom: 1px;
 }
 
+#logo {
+  display: block;
+  height: 100px;
+  margin: 30px auto 0 auto;
+}
+
 #everything {
   min-height: 100vh;
 }
