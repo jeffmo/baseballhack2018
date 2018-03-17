@@ -1,6 +1,12 @@
+var params={};
+location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v});
+
 var presence = new WebSocket(
     (window.location.protocol.match(/^https/) ? 'wss://' : 'ws://') +
         window.location.host + '/api/ws',
+        'section' in params ?
+            params['section'] :
+            'operator',
 );
 
 presence.onopen = function (event) {
@@ -21,14 +27,14 @@ presence.onmessage = function (event) {
             // TODO don't just alert this
             // alert(value.start);
             if (window.colorShow) {
-                colorShow(value.start, value.schedule);
+                colorShow(value.start); //, value.schedule);
             }
             break;
 
         case 'presence':
             if (document.querySelector('#how_many')) {
                 // Don't include self, so subtract 1
-                document.querySelector('#how_many').innerText = value - 1;
+                document.querySelector('#how_many').innerText = JSON.stringify(value);
             }
             break;
     }

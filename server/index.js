@@ -22,14 +22,14 @@ app.post('/api/go', function (req, res) {
 	const MS_IN_SEC = 1000;
     const startCountdownTime = Date.now() + (COUNTDOWN_SECS*MS_IN_SEC);
 
-    const colorsList = ["red", "white", "blue", "red", "white", "blue"];
-
-    all_users.forEach(socket => {
-        // Create the schedule to send out
-        socket.send(JSON.stringify(['schedule', {
-            start: startCountdownTime,
-            schedule: colorsList,
-        }]));
+    Object.values(sections).forEach(section_users => {
+        section_users.forEach(socket => {
+            // Create the schedule to send out
+            socket.send(JSON.stringify(['schedule', {
+                start: startCountdownTime,
+                // schedule: colorsList,
+            }]));
+        });
     });
 
     res.redirect('/operator/');
@@ -43,22 +43,40 @@ const wss = new WebSocket.Server({
 });
 
 // Set of all users.
-let all_users = new Set();
+let sections = {
+    '1': new Set(),
+    '2': new Set(),
+    '3': new Set(),
+    '4': new Set(),
+};
+let operators = new Set();
 wss.on('connection', (ws, req) => {
+    // Validate section
+    console.log('ws connected with protocol:', ws.protocol);
+    let section = ws.protocol in sections ? ws.protocol : 'operator';
+
     // Add to our set.
-    all_users.add(ws);
-    all_users.forEach(socket => {
-        socket.send(JSON.stringify(['presence', all_users.size]));
+    if (section !== 'operator') {
+        sections[section].add(ws);
+    } else {
+        operators.add(ws);
+    }
+    operators.forEach(socket => {
+        socket.send(JSON.stringify(['presence', Object.values(sections).map(s => s.size)]));
     });
-    console.log('(+) websocket subscribed, count is', all_users.size);
+    console.log('(+) websocket subscribed, section counts:', Object.values(sections).map(s => s.size));
     
     // Remove from our set to our set.
     ws.on('close', () => {
-        all_users.delete(ws);
-        all_users.forEach(socket => {
-            socket.send(JSON.stringify(['presence', all_users.size]));
+        if (section !== 'operator') {
+            sections[section].delete(ws);
+        } else {
+            operators.delete(ws);
+        }
+        operators.forEach(socket => {
+            socket.send(JSON.stringify(['presence', Object.values(sections).map(s => s.size)]));
         });
-        console.log('(-) websocket unsubscribed, count is', all_users.size);
+        console.log('(-) websocket unsubscribed, section counts:', Object.values(sections).map(s => s.size));
     });
 
     // Handle incoming messages
