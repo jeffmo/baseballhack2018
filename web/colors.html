@@ -16,6 +16,9 @@
 			
 		$(document).ready(function() {
 			$('#which-section').text('Section ' + params['section'])
+
+			// Initially set the color, to make it distinct
+			$('#everything').css('background-color', '#eee');
 		});
 
 		function colorShow(startCountdownTime) {
