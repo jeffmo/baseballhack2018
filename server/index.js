@@ -25,8 +25,11 @@ const wss = new WebSocket.Server({
 });
 
 let user_count = 0;
+let all_users = new Set();
 
 wss.on('connection', function connection(ws, req) {
+    all_users.add(req);
+
     const location = url.parse(req.url, true);
     // You might use location.query.access_token to authenticate or share sessions
     // or req.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
@@ -48,6 +51,7 @@ wss.on('connection', function connection(ws, req) {
 
     console.log('counter++');
     ws.on('close', function () {
+        all_users.remove(req);
         user_count = (user_count > 0 ? user_count - 1 : 0);
         console.log('(-) websocket unsubscribed, count is', user_count);
     })
