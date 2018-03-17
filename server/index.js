@@ -37,56 +37,6 @@ app.post('/api/go', function (req, res) {
     res.redirect('/operator/');
 });
 
-let START = Date.now();
-
-const VIDEO_FILE = path.resolve(__dirname, 'video.mp4');
-app.get('/video.mp4', function (req, res) {
-  var range = req.headers.range;
-  if (!range) {
-    return res.sendStatus(416); // Wrong range
-  }
-
-  console.log('statting...');
-  fs.stat(VIDEO_FILE, function(err, stats) {
-    var positions = range.replace(/bytes=/, "").split("-");
-    var start = parseInt(positions[0], 10);
-    var total = stats.size;
-    var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
-    var chunksize = (end - start) + 1;
-
-    res.writeHead(206, {
-      "Content-Range": "bytes " + start + "-" + end + "/" + total,
-      "Accept-Ranges": "bytes",
-      "Content-Length": chunksize,
-      "Content-Type": "video/mp4"
-    });
-
-    function doStream() {
-      console.log('reading stream...');
-      var stream = fs.createReadStream(VIDEO_FILE, { start: start, end: end })
-        .on("open", function() {
-          stream.pipe(res);
-        })
-        .on("error", function(err) {
-          res.end(err);
-        });
-    }
-    setTimeout(doStream, 5000);
-    /*
-    setTimeout(function waiter() {
-      const diff = Date.now() - START;
-      console.log('diff: ', diff);
-      if (Date.now() - START < (1000* 20)) {
-        setTimeout(waiter, 5000);
-      } else {
-        START = Date.now();
-        doStream();
-      }
-    }, 5000);
-    */
-  });
-});
-
 // Websocket setup.
 const server = http.createServer(app);
 const wss = new WebSocket.Server({
