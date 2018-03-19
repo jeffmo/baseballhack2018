@@ -28,10 +28,10 @@
 			const MS_IN_SEC = 1000;
 
       const colorsBySection = [];
-      colorsBySection[1] = ["white","#C8102E",  "white","white","white","white","white","white","white","#0C2340", "white","white","#C8102E",  "white","white","white","white","white","white","white","#0C2340", "white"];
-      colorsBySection[2] = ["white","white","#C8102E",  "white","white","white","white","white","#0C2340", "white","white","white","white","#C8102E",  "white","white","white","white","white","#0C2340", "white","white"];
-      colorsBySection[3] = ["white","white","white","#C8102E",  "white","white","white","#0C2340", "white","white","white","white","white","white","#C8102E",  "white","white","white","#0C2340", "white","white","white"];
-      colorsBySection[4] = ["white","white","white","white","#C8102E",  "white","#0C2340", "white","white","white","white","white","white","white","white","#C8102E",  "white","#0C2340", "white","white","white","white"];
+      colorsBySection[1] = ["#C8102E","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#0C2340","#C8102E","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#0C2340"];
+      colorsBySection[2] = ["#FFFFFF","#C8102E","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#0C2340","#FFFFFF","#FFFFFF","#C8102E","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#0C2340","#FFFFFF"];
+      colorsBySection[3] = ["#FFFFFF","#FFFFFF","#C8102E","#FFFFFF","#FFFFFF","#0C2340","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#C8102E","#FFFFFF","#FFFFFF","#0C2340","#FFFFFF","#FFFFFF"];
+      colorsBySection[4] = ["#FFFFFF","#FFFFFF","#FFFFFF","#C8102E","#0C2340","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#C8102E","#0C2340","#FFFFFF","#FFFFFF","#FFFFFF"];
 
       const imagesBySection = [];
       imagesBySection[1] = ["images/go.png", null]; 
@@ -85,16 +85,17 @@
           const imageIndex = (index - colorsList.length) % 2;
           $('#everything').css('background-color', '#0C2340');
           const imageSrc = imagesList[imageIndex];
-          if (imageSrc !== null) {
-            if (!$('#goSox').length) {
-              var image = document.createElement("IMG");
-              image.setAttribute('class', 'photo');
-              image.setAttribute('id', 'goSox');
-              image.src=imageSrc;
-              $('#everything').html(image);
-            }
+          const existingImage = $('#goSox');
+          if (imageSrc !== null && !existingImage.length) {
+            var image = document.createElement("IMG");
+            image.setAttribute('class', 'photo');
+            image.setAttribute('id', 'goSox');
+            image.src=imageSrc;
+            $('#everything').html(image);
+          } else if (imageSrc !== null) {
+            existingImage.show();
           } else {
-            $('#everything').html("");
+            existingImage.hide();
           }
 					const nextImageTime = startColorTime + (index + 1) * (MS_IN_SEC)
 					setTimeout(update, nowTime - nextImageTime);
